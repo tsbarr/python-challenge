@@ -1,4 +1,4 @@
-# UofT SCS EdX Data Bootcamp 
+# UofT SCS EdX Data Bootcamp
 # Challenge 3. Part 1: PyBank
 # Script Author: Tania Barrera (tsbarr)
 # -----------------------------------------
@@ -7,65 +7,49 @@
 import os
 import csv
 
-# input source path
+# --- for storing output
+totalMonths = 0  # count months
+totalChange = 0  # sum all changes
+minChange = ["", 0]  # lowest change and its date [date, change]
+maxChange = ["", 0]  # highest change and its date [date, change]
+
+# --- input source path
 csvpath = os.path.join('PyBank', 'resources', 'budget_data.csv')
 
-# ------- opened --------
+# ------- open file stream --------
 # open input csv file using path
 with open(csvpath) as csvfile:
-    	# csv reader
-	csvreader = csv.reader(csvfile, delimiter=',')
-	
-	# get headers
-	headers = next(csvreader())
-	# first column: date
-	# second column: change
+    # csv reader, columns: date, change
+    csvreader = csv.reader(csvfile, delimiter=',')
 
-	# initialize totalmonths and totalchange
-	totalMonths = 0
-	totalChange = 0
+    # get headers
+    headers = next(csvreader())
 
-	# initialize vars to store min/max change and their dates
-	minChangeValue = 0
-	minChangeDate = ""
-	maxChangeValue = 0
-	maxChangeName = ""
+    # iterate through rest of rows
+    for row in csvreader:
+        # get data from this row
+        thisDate = row[0]
+        thisChange = int(row[1])  # cast str to int
 
-	# iterate through all rows (except above headers)
-	for row in csvreader:
-		# get data from this row
-		thisDate = row[1]
-		thisChange = row[2]
+        # increase totalMonths by 1
+        totalMonths += 1
 
-		#increase totalMonths by 1
-		totalMonths += 1
+        # increase totalchange by thisChange
+        totalChange += thisChange
 
-		# increase totalchange by thisChange
-		totalChange += thisChange
+        # check if thisChange is lower than minChange
+        if thisChange < minChange[1]:
+            # if so, update minChange with current row
+            minChange = row
 
-		# check if thisChange is lower than minChange
-		if thisChange < minChangeValue:
-			# if so, update minChange variables
-			minChangeValue = thisChange
-			minChangeDate = thisDate
-		
-		# check if thisChange is higher than minChange
-		if thisChange > maxChangeValue:
-			# if so, update minChange variables
-			maxChangeValue = thisChange
-			maxChangeDate = thisDate
-
-# ------- closed --------
+        # check if thisChange is higher than minChange
+        if thisChange > maxChange[1]:
+            # if so, update maxChange with current row
+            maxChange = row
+# ------- close file stream --------
 
 # average change is totalChange / totalMonths
 averageChange = totalChange / totalMonths
 
 # we now have all necessary values, so we format the output in a string
-
-
-
-
-		
 print(f"---\n{csvreader.line_num}")
-
-
