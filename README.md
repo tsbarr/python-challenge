@@ -22,19 +22,13 @@ Your task is to create a Python script that analyzes the records to calculate ea
 Your analysis should align with the following results:
 
 ```
-	Financial Analysis
-
-	------------------------
-
-	Total Months: 86
-
-	Total: $22564198
-	
-	Averange Change: $-8311.11
-	
-	Greatest Increase in Profits: Aug-16 ($1862002)
-	
-	Greatest Decrease in Profits: Feb-14 ($-1825558)
+Financial Analysis
+----------------------------
+Total Months: 86
+Total: $22564198
+Average Change: $-8311.11
+Greatest Increase in Profits: Aug-16 ($1862002)
+Greatest Decrease in Profits: Feb-14 ($-1825558)
 
 ```
 

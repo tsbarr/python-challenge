@@ -7,16 +7,20 @@
 import os
 import csv
 
-# --- for storing output
-totalMonths = 0  # count months
-totalPL = 0  # sum all profit/losses
-totalChange = 0  # calculate difference from prev PL for each and sum all, to calculate average later
+# --- variables that will store output
+# month count
+totalMonths = 0
+# sum all profit/losses (PL)
+totalPL = 0
+# sum all changes in PL, to calculate average later
+totalChange = 0
 # max decrease = min Change in PL and its date [date, decrease]
 minChange = ["", 0]
 # max increase = max Change in PL and its date [date, increase]
 maxChange = ["", 0]
 
-# --- input source path
+# --- read input
+# input source path
 csvpath = os.path.join('resources', 'budget_data.csv')
 
 # ------- open file stream --------
@@ -64,19 +68,30 @@ with open(csvpath) as csvfile:
             maxChange = [thisDate, thisChange]
         # set previousPL as thisPL before looping back to next row
         previousPL = thisPL
-
 # ------- close file stream --------
-print("\n\n")
-# average change is totalChange divided by totalMonths-1
+
+# --- average change
+# totalChange divided by totalMonths-1
 # (because no change for first month)
 # round to 2 decimal places
 averageChange = round(totalChange / (totalMonths - 1), 2)
 
-# we now have all necessary values, so we format the output in a string
-outputS = f"Financial Analysis\n\n------------------------\n\nTotal Months: {totalMonths}\n\nTotal: {totalPL}\n\nAverange Change: {averageChange}\n\nGreatest Increase in Profits: {maxChange[0]} ({maxChange[1]})\n\nGreatest Decrease in Profits: {minChange[0]} ({minChange[1]})"
+# --- format the output in a string
+outString = f"Financial Analysis\n\n----------------------------\n\nTotal Months: {totalMonths}\n\nTotal: ${totalPL}\n\nAverange Change: ${averageChange}\n\nGreatest Increase in Profits: {maxChange[0]} (${maxChange[1]})\n\nGreatest Decrease in Profits: {minChange[0]} (${minChange[1]})"
 
-# write output to file
+# --- write output to file
+# output source path
+outPath = os.path.join('analysis', 'budget_analysis_tsbarr.txt')
 
+# ------- open file stream --------
+# open output txt file using path
+with open(outPath, mode="w") as outFile:
+    outFile.write(outString)
+# ------- close file stream --------
 
-# print output to console
-print(outputS)
+# --- print output to console
+print("\n\n")
+print(outString)
+print("\n\n")
+
+# THE END
