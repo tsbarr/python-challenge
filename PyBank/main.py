@@ -14,7 +14,7 @@ minChange = ["", 0]  # lowest change and its date [date, change]
 maxChange = ["", 0]  # highest change and its date [date, change]
 
 # --- input source path
-csvpath = os.path.join('PyBank', 'resources', 'budget_data.csv')
+csvpath = os.path.join('resources', 'budget_data.csv')
 
 # ------- open file stream --------
 # open input csv file using path
@@ -23,7 +23,7 @@ with open(csvpath) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
 
     # get headers
-    headers = next(csvreader())
+    headers = next(csvreader)
 
     # iterate through rest of rows
     for row in csvreader:
@@ -40,16 +40,22 @@ with open(csvpath) as csvfile:
         # check if thisChange is lower than minChange
         if thisChange < minChange[1]:
             # if so, update minChange with current row
-            minChange = row
+            minChange = [thisDate, thisChange]
 
         # check if thisChange is higher than minChange
         if thisChange > maxChange[1]:
             # if so, update maxChange with current row
-            maxChange = row
+            maxChange = [thisDate, thisChange]
 # ------- close file stream --------
 
 # average change is totalChange / totalMonths
 averageChange = totalChange / totalMonths
 
 # we now have all necessary values, so we format the output in a string
-print(f"---\n{csvreader.line_num}")
+outputS = f"Financial Analysis\n\n------------------------\n\nTotal Months: {totalMonths}\n\nTotal: {totalChange}\n\nAverange Change: {averageChange}\n\nGreatest Increase in Profits: {maxChange[0]} ({maxChange[1]})\n\nGreatest Decrease in Profits: {minChange[0]} ({minChange[1]})"
+
+# write output to file
+
+
+# print output to console
+print(outputS)
