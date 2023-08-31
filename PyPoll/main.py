@@ -3,92 +3,85 @@
 # Script Author: Tania Barrera (tsbarr)
 # -----------------------------------------
 
-# import modules
+# --- import modules
 import os
 import csv
-
-# --- variables that will store output
-# a nested dictionary with key = candidate, value = dict{voteCount, percentOfVote}
-# https://www.w3schools.com/python/python_dictionaries_nested.asp
-candidateInfo = {}
-# sum of vote counts
-totalVotes = 0
-# string to concatenate the portion of the output for individual candidates
-outIndividualCandidates = ""
+# used to count votes
+# documentation: https://docs.python.org/3/library/collections.html#collections.Counter
+from collections import Counter
 
 # --- read input
 # input source path
-csvpath = os.path.join('resources', 'election_data.csv')
+ipath = os.path.join('resources', 'election_data.csv')
 
 # ------- open file stream --------
 # open input csv file using path
-with open(csvpath) as csvfile:
+with open(ipath) as ifile:
     # csv reader, columns: id, county, candidate
-    csvreader = csv.reader(csvfile, delimiter=',')
+    ireader = csv.reader(ifile, delimiter=',')
 
-    # skip headers
-    next(csvreader)
+    # store header row
+    header = next(ireader)
 
-    # iterate through rest of rows
-    for row in csvreader:
-        # get name of candidate in the row
-        thisCandidate = row[2]
-        # if thisCandidate exists in candidateInfo
-        # https://flexiple.com/python/check-if-key-exists-in-dictionary-python/
-        if thisCandidate in candidateInfo:
-            # increase thisCandidate voteCount by 1
-            candidateInfo[thisCandidate]["voteCount"] += 1
-        else:
-            # add it and set voteCount to 1
-            # https://www.w3schools.com/python/python_dictionaries_add.asp
-            candidateInfo[thisCandidate] = {"voteCount": 1}
+    # using the rest of the rows in ireader,
+    # extract the column of candidate names into a tuple
+    # and use Counter() to count the instances of each name
+    # voteCounts is now a dict with keys = candidate names, values = vote count
+    # Based on "Counting Files by Type" example at: https://realpython.com/python-counter/
+    voteCounts = Counter((row[2] for row in ireader))
 # ------- close file stream --------
 
-# use max() with key argument to find winner
-# parameter iterable: candidate names (the keys of the dict candidateInfo)
-# key argument: lambda function that returns the candidate 'votecount'
-# therefore, the voteCount will be used to sort and it will return the name with the highest voteCount
-# max function documentation: https://thepythonguru.com/python-builtin-functions/max/
-# how to lambda functions: https://www.w3schools.com/python/python_lambda.asp
-winner = max(
-    candidateInfo.keys(),
-    key=lambda thisCandidate: candidateInfo[thisCandidate]["voteCount"]
-)
+# --- winner
+# use method .most_common(n) from Counter subclass to find the winner
+# it returns a list of tuples with the top n highest keys and their counts
+# doc: https://docs.python.org/3/library/collections.html#collections.Counter.most_common
+# in this case, we use it with n=1
+# and extract the name as the first item of the first tuple in the list
+# note: it can be adapted to detect ties if we use a higher n and compare results
+# as is, in case of tie, it will just return the name that appears first that has the max count
+winner = voteCounts.most_common(1)[0][0]
 
 # --- totalVotes
-# iterate through candidates in candidateInfo
-for thisCandidate in candidateInfo:
-    # add the voteCount of each candidate to totalVotes
-    totalVotes += candidateInfo[thisCandidate]["voteCount"]
+# use method .total from Counter subclass to sum all counts
+totalVotes = voteCounts.total()
 
-
-# --- percentOfVote
+# --- percentOfVote and output for individual candidates
 # now that we have the totalVotes, we can calculate percentOfVote
-# and format the candidate-level output, concatenating them in outIndividualCandidates
-for thisCandidate in candidateInfo:
-    # add percentOfVote to candidate entry,
-    # as voteCount / totalVotes
-    candidateInfo[thisCandidate]["percentOfVotes"] = candidateInfo[thisCandidate]["voteCount"] / totalVotes
-    # format and add thisCandidate info to output string outIndividualCandidates
-    outIndividualCandidates = outIndividualCandidates + \
-        f"{thisCandidate}: {round(candidateInfo[thisCandidate]['percentOfVotes']*100, 3)}% ({candidateInfo[thisCandidate]['voteCount']})\n\n"
+# and format the candidate-level output, concatenating them in oCandidateInfo
+oCandidateInfo = ""
+for name in voteCounts:
+    # percentOfVote = voteCount / totalVotes, not necessary to store long-term
+    # multiply by 100 and round to 3 decimal places
+    percentOfVotes = round(voteCounts[name] / totalVotes * 100, 3)
+    # format and add this candidate's info to output string
+    oCandidateInfo += f"{name}: {percentOfVotes}% ({voteCounts[name]})\n\n"
 
-# --- format the whole output, store it in a string
-outString = f"Election Results\n\n-------------------------\n\nTotal Votes: {totalVotes}\n\n-------------------------\n\n{outIndividualCandidates}-------------------------\n\nWinner: {winner}\n\n-------------------------"
+# --- format the whole output, store it in outString
+oString = f"\
+Election Results\n\n\
+-------------------------\n\n\
+Total Votes: {totalVotes}\n\n\
+-------------------------\n\n\
+{oCandidateInfo}\
+-------------------------\n\n\
+Winner: {winner}\n\n\
+-------------------------\
+"
 
-# # --- write output to file
-# # output source path
-# outPath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
+# --- write output to file
+# output source path
+opath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
 
-# # ------- open file stream --------
-# # open output txt file using path
-# with open(outPath, mode="w") as outFile:
-#     outFile.write(outString)
-# # ------- close file stream --------
+# ------- open file stream --------
+# open output txt file using path
+with open(opath, mode="w") as ofile:
+    # write output string to file
+    ofile.write(oString)
+# ------- close file stream --------
 
 # --- print output to console
 print("\n\n")
-print(outString)
+print(oString)
 print("\n\n")
 
 # THE END
