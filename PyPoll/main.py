@@ -35,54 +35,63 @@ with open(ipath) as ifile:
 # parameter iterable: candidate names (the keys of the dict votesByCandidate)
 # key argument: lambda function that returns the candidate 'voteCount'
 # therefore, the voteCount will be used to sort and it will return the name with the highest voteCount
-# max function documentation: https://thepythonguru.com/python-builtin-functions/max/
+# explanation of max's key argument: https://thepythonguru.com/python-builtin-functions/max/
 # how to lambda functions: https://www.w3schools.com/python/python_lambda.asp
 winner = max(voteCounts.keys(), key=lambda name: voteCounts[name])
+# note: in case of tie, it will just return the first name that has the max count,
+# see bottom of script for a way to detect if there are ties
 
 # --- totalVotes
-# sum of values in voteCounts
-totalVotes = 0
-# iterate through candidates in votesByCandidate
-for thisCandidate in voteCounts:
-    # add the voteCount of each candidate to totalVotes
-    totalVotes += voteCounts[thisCandidate]
-
+# use method .total from Counter subclass to sum all counts
+totalVotes = voteCounts.total()
 
 # --- percentOfVote and output for individual candidates
 # now that we have the totalVotes, we can calculate percentOfVote
-# and format the candidate-level output, concatenating them in outCandidateInfo
-outCandidateInfo = ""
-for thisCandidate in voteCounts:
+# and format the candidate-level output, concatenating them in oCandidateInfo
+oCandidateInfo = ""
+for name in voteCounts:
     # percentOfVote = voteCount / totalVotes, not necessary to store long-term
-    percentOfVotes = voteCounts[thisCandidate] / totalVotes
-    # format and add thisCandidate info to output string
-    outCandidateInfo += f"{thisCandidate}: {round(percentOfVotes*100, 3)}% ({voteCounts[thisCandidate]})\n\n"
+    # multiply by 100 and round to 3 decimal places
+    percentOfVotes = round(voteCounts[name] / totalVotes * 100, 3)
+    # format and add this candidate's info to output string
+    oCandidateInfo += f"{name}: {percentOfVotes}% ({voteCounts[name]})\n\n"
 
 # --- format the whole output, store it in outString
-outString = f"\
+oString = f"\
 Election Results\n\n\
 -------------------------\n\n\
 Total Votes: {totalVotes}\n\n\
 -------------------------\n\n\
-{outCandidateInfo}\
+{oCandidateInfo}\
 -------------------------\n\n\
 Winner: {winner}\n\n\
 -------------------------\
 "
 
-# # --- write output to file
-# # output source path
-# outPath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
+# --- write output to file
+# output source path
+opath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
 
-# # ------- open file stream --------
-# # open output txt file using path
-# with open(outPath, mode="w") as outFile:
-#     outFile.write(outString)
-# # ------- close file stream --------
+# ------- open file stream --------
+# open output txt file using path
+with open(opath, mode="w") as ofile:
+    # write output string to file
+    ofile.write(oString)
+# ------- close file stream --------
 
 # --- print output to console
 print("\n\n")
-print(outString)
+print(oString)
 print("\n\n")
 
 # THE END
+# --------------------------------------------------------------------------------------------
+
+# EXTRA: check for ties
+# count how many times voteCount values appear
+# find max voteCount
+# look at the value of max voteCount in second count
+# if it is more than 1, it is not unique
+# therefore, there is a tie
+# if Counter(voteCounts.values())[max(voteCounts.values())] > 1:
+#     print(f"WARNING! There is at tie. {winner} is not the only winner. Revote time.")
