@@ -31,15 +31,15 @@ with open(ipath) as ifile:
     voteCounts = Counter((row[2] for row in ireader))
 # ------- close file stream --------
 
-# use max() with key argument to find winner
-# parameter iterable: candidate names (the keys of the dict votesByCandidate)
-# key argument: lambda function that returns the candidate 'voteCount'
-# therefore, the voteCount will be used to sort and it will return the name with the highest voteCount
-# explanation of max's key argument: https://thepythonguru.com/python-builtin-functions/max/
-# how to lambda functions: https://www.w3schools.com/python/python_lambda.asp
-winner = max(voteCounts.keys(), key=lambda name: voteCounts[name])
-# note: in case of tie, it will just return the first name that has the max count,
-# see bottom of script for a way to detect if there are ties
+# --- winner
+# use method .most_common(n) from Counter subclass to find the winner
+# it returns a list of tuples with the top n highest keys and their counts
+# doc: https://docs.python.org/3/library/collections.html#collections.Counter.most_common
+# in this case, we use it with n=1
+# and extract the name as the first item of the first tuple in the list
+# note: it can be adapted to detect ties if we use a higher n and compare results
+# as is, in case of tie, it will just return the name that appears first that has the max count
+winner = voteCounts.most_common(1)[0][0]
 
 # --- totalVotes
 # use method .total from Counter subclass to sum all counts
