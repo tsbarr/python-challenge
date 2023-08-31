@@ -13,8 +13,6 @@ import csv
 candidateInfo = {}
 # sum of vote counts
 totalVotes = 0
-# candidate with the max voteCount. dictionary with {name, voteCount}
-winner = {"name": "", "voteCount": 0}
 # string to concatenate the portion of the output for individual candidates
 outIndividualCandidates = ""
 
@@ -28,8 +26,8 @@ with open(csvpath) as csvfile:
     # csv reader, columns: id, county, candidate
     csvreader = csv.reader(csvfile, delimiter=',')
 
-    # get headers
-    headers = next(csvreader)
+    # skip headers
+    next(csvreader)
 
     # iterate through rest of rows
     for row in csvreader:
@@ -44,18 +42,18 @@ with open(csvpath) as csvfile:
             # add it and set voteCount to 1
             # https://www.w3schools.com/python/python_dictionaries_add.asp
             candidateInfo[thisCandidate] = {"voteCount": 1}
-        # winner calculation:
-        # check if candidate name is different from winner AND count is higher
-            # note: final voteCount in winner dict wont match the actual voteCount,
-            # but this way it wont update each time a vote is count for current winner
-            # TODO: handle ties, not necessary for current challenge
-        if winner["name"] != thisCandidate and candidateInfo[thisCandidate]["voteCount"] > winner["voteCount"]:
-            # update with thisCandidate values
-            winner = {
-                "name": thisCandidate,
-                "voteCount": candidateInfo[thisCandidate]["voteCount"]
-            }
 # ------- close file stream --------
+
+# use max() with key argument to find winner
+# parameter iterable: candidate names (the keys of the dict candidateInfo)
+# key argument: lambda function that returns the candidate 'votecount'
+# therefore, the voteCount will be used to sort and it will return the name with the highest voteCount
+# max function documentation: https://thepythonguru.com/python-builtin-functions/max/
+# how to lambda functions: https://www.w3schools.com/python/python_lambda.asp
+winner = max(
+    candidateInfo.keys(),
+    key=lambda thisCandidate: candidateInfo[thisCandidate]["voteCount"]
+)
 
 # --- totalVotes
 # iterate through candidates in candidateInfo
@@ -76,17 +74,17 @@ for thisCandidate in candidateInfo:
         f"{thisCandidate}: {round(candidateInfo[thisCandidate]['percentOfVotes']*100, 3)}% ({candidateInfo[thisCandidate]['voteCount']})\n\n"
 
 # --- format the whole output, store it in a string
-outString = f"Election Results\n\n-------------------------\n\nTotal Votes: {totalVotes}\n\n-------------------------\n\n{outIndividualCandidates}-------------------------\n\nWinner: {winner['name']}\n\n-------------------------"
+outString = f"Election Results\n\n-------------------------\n\nTotal Votes: {totalVotes}\n\n-------------------------\n\n{outIndividualCandidates}-------------------------\n\nWinner: {winner}\n\n-------------------------"
 
-# --- write output to file
-# output source path
-outPath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
+# # --- write output to file
+# # output source path
+# outPath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
 
-# ------- open file stream --------
-# open output txt file using path
-with open(outPath, mode="w") as outFile:
-    outFile.write(outString)
-# ------- close file stream --------
+# # ------- open file stream --------
+# # open output txt file using path
+# with open(outPath, mode="w") as outFile:
+#     outFile.write(outString)
+# # ------- close file stream --------
 
 # --- print output to console
 print("\n\n")
