@@ -85,13 +85,3 @@ print(oString)
 print("\n\n")
 
 # THE END
-# --------------------------------------------------------------------------------------------
-
-# EXTRA: check for ties
-# count how many times voteCount values appear
-# find max voteCount
-# look at the value of max voteCount in second count
-# if it is more than 1, it is not unique
-# therefore, there is a tie
-# if Counter(voteCounts.values())[max(voteCounts.values())] > 1:
-#     print(f"WARNING! There is at tie. {winner} is not the only winner. Revote time.")
