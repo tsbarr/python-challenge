@@ -50,11 +50,13 @@ with open(csvpath) as csvfile:
             # but this way it wont update each time a vote is count for current winner
             # TODO: handle ties, not necessary for current challenge
         if winner["name"] != thisCandidate and candidateInfo[thisCandidate]["voteCount"] > winner["voteCount"]:
+            print(f"\n\n---Update winner:---\n\tFormer:\t{winner}\n")
             # update with thisCandidate values
             winner = {
                 "name": thisCandidate,
                 "voteCount": candidateInfo[thisCandidate]["voteCount"]
             }
+            print(f"\tNew:\t{winner}")
 # ------- close file stream --------
 
 # --- totalVotes
@@ -78,15 +80,15 @@ for thisCandidate in candidateInfo:
 # --- format the whole output, store it in a string
 outString = f"Election Results\n\n-------------------------\n\nTotal Votes: {totalVotes}\n\n-------------------------\n\n{outIndividualCandidates}-------------------------\n\nWinner: {winner['name']}\n\n-------------------------"
 
-# --- write output to file
-# output source path
-outPath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
+# # --- write output to file
+# # output source path
+# outPath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
 
-# ------- open file stream --------
-# open output txt file using path
-with open(outPath, mode="w") as outFile:
-    outFile.write(outString)
-# ------- close file stream --------
+# # ------- open file stream --------
+# # open output txt file using path
+# with open(outPath, mode="w") as outFile:
+#     outFile.write(outString)
+# # ------- close file stream --------
 
 # --- print output to console
 print("\n\n")
