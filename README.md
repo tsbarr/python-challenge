@@ -1,4 +1,4 @@
-# Python Challenge
+# Python Challenge: PyBank and PyPoll
 
 **Student name:** Tania Barrera
 
@@ -6,7 +6,7 @@
 
 This repo contains my work for the third weekly challenge of the UofT SCS edX Data Bootcamp.
 
-This challenge contains two parts: PyBank and PyPoll. Each part is contained within its own folder and should be run within this folder, independetly from each other. The scripts named `Main.py` will read in the input data assuming that they are being run in the PyBank or PyPoll subfolders and use this assumption to assign the file paths.
+This challenge contains two parts: PyBank and PyPoll. Each part is contained within its own folder and should be run within that folder (i.e. PyBank or PyPoll), as each program is independent from each other. The scripts named `main.py` will read in the input data assuming that they are being run within the PyBank or PyPoll subfolder and use this assumption to assign the file paths.
 
 ## PyBank
 
@@ -32,7 +32,7 @@ In addition, your final script should both print the analysis to the terminal an
 
 ### Running the program
 
-Run [`main.py`](PyBank/main.py) within the PyBank folder. The input file path for the program is [`/resources/budget_data.csv`](PyBank/resources/budget_data.csv) and the output file path is [`/analysis/budget_analysis_results.txt`](PyBank/analysis/budget_analysis_results.txt).
+Run [`main.py`](PyBank/main.py) within the PyBank folder. The input file path for the program is [`/resources/budget_data.csv`](PyBank/resources/budget_data.csv) and the output file path is [`/analysis/budget_analysis_results.txt`](PyBank/analysis/budget_analysis_results.txt). It is very important to make sure to navigate to the PyBank folder before running `main.py`, so these file paths work as intended.
 
 ### Imports
 
@@ -107,7 +107,7 @@ In addition, your final script should both print the analysis to the terminal an
 
 ### Running the program
 
-Run [`main.py`](PyPoll/main.py) within the PyPoll folder. The input file path for the program is [`/resources/election_data.csv`](PyPoll/resources/election_data.csv) and the output file path is [`/analysis/election_analysis_results.txt`](PyPoll/analysis/election_analysis_results.txt).
+Run [`main.py`](PyPoll/main.py) within the PyPoll folder. The input file path for the program is [`/resources/election_data.csv`](PyPoll/resources/election_data.csv) and the output file path is [`/analysis/election_analysis_results.txt`](PyPoll/analysis/election_analysis_results.txt). It is very important to make sure to navigate to the PyPoll folder before running before running `main.py`, so these file paths work as intended.
 
 ### Imports
 
@@ -143,8 +143,8 @@ Once this Counter dictionary was generated, I used it to calculate the rest of t
 
 - **Winner:** 
     
-    - Used the Counter method `.most_common(n)`, with `n=1`, which returns a list of lists with each internal list being the [key, value] of each of the top n count items.
-        - *Note:* Currently, the program cannot deal with ties. It will only return the first name that has the highest count, ignoring any other name that comes afterwards that has the same vote count. However, the `.most_common(n)` method can be used to modify the program to determine if there are ties (e.g. with a loop where n increases until the vote count is different from when `n=1`).
+    - Used the Counter method `.most_common(n)`, with `n=1`, which returns a list of lists with each internal lists being the pairs `[key, value]` of each of the top `n` items with the highest counts.
+        - *Note:* Currently, the program cannot deal with ties. It will only return the first name that has the highest count, ignoring any other name that comes afterwards that has the same vote count. However, the `.most_common(n)` method can be used to modify the program to determine if there are ties (e.g. with a loop where `n` increases until the vote count is different from when `n=1`).
 
 ### References
 
@@ -160,4 +160,4 @@ Other code sections were adapted from other sources, specific explanations are f
 |------------------------------------	|------------------------------------------	|
 | `Counter` subclass documentation 	| https://docs.python.org/3/library/collections.html#collections.Counter 	|
 | How to use the Counter subclass within a file reader `with` statement. "Counting Files by Type" example	| https://realpython.com/python-counter/	|
-| Method `.most_common(n)`	| https://docs.python.org/3/library/collections.html#collections.Counter.most_common	|
+| `.most_common(n)` methods documentation	| https://docs.python.org/3/library/collections.html#collections.Counter.most_common	|
