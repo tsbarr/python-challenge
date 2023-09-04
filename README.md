@@ -75,9 +75,7 @@ The values in the output are both printed in the terminal and stored in an outpu
 
 ### References
 
-Some code sections were adapted from the UofT SCS EdX Data Bootcamp class activities.
-
-Challenge instructions and input file:
+Challenge instructions and input file, as well as some code sections that were adapted from the UofT SCS EdX Data Bootcamp class activities:
 
 © 2022 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
 
@@ -148,9 +146,7 @@ Once this Counter dictionary was generated, I used it to calculate the rest of t
 
 ### References
 
-Some code sections were adapted from the UofT SCS EdX Data Bootcamp class activities.
-
-Challenge instructions and input file:
+Challenge instructions and input file, as well as some code sections that were adapted from the UofT SCS EdX Data Bootcamp class activities:
 
 © 2022 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
 
@@ -160,4 +156,4 @@ Other code sections were adapted from other sources, specific explanations are f
 |------------------------------------	|------------------------------------------	|
 | `Counter` subclass documentation 	| https://docs.python.org/3/library/collections.html#collections.Counter 	|
 | How to use the Counter subclass within a file reader `with` statement. "Counting Files by Type" example	| https://realpython.com/python-counter/	|
-| `.most_common(n)` methods documentation	| https://docs.python.org/3/library/collections.html#collections.Counter.most_common	|
+| `.most_common(n)` method documentation	| https://docs.python.org/3/library/collections.html#collections.Counter.most_common	|
