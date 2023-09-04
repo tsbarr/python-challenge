@@ -12,30 +12,32 @@ import csv
 totalMonths = 0
 # sum all profit/losses (PL)
 totalPL = 0
-# sum all changes in PL, to calculate average later
+# change = previousPL - currentPL
+# sum all changes in PL, to calculate average change later
 totalChange = 0
-# max decrease = min Change in PL and its date [date, decrease]
-minChange = ["", 0]
-# max increase = max Change in PL and its date [date, increase]
-maxChange = ["", 0]
+# dictionary to store data on greatest changes (decrease and increase)
+greatest = {
+    "decrease" : ["", 0],   # [date, value]
+    "increase" : ["", 0]    # [date, value]
+}
 
 # --- read input
 # input source path
-csvpath = os.path.join('resources', 'budget_data.csv')
+inPath = os.path.join('resources', 'budget_data.csv')
 
 # ------- open file stream --------
 # open input csv file using path
-with open(csvpath) as csvfile:
+with open(inPath) as inFile:
     # csv reader, columns: date, change
-    csvreader = csv.reader(csvfile, delimiter=',')
+    inReader = csv.reader(inFile, delimiter=',')
 
-    # get headers
-    headers = next(csvreader)
+    # store header row
+    headers = next(inReader)
 
     # get first row before itaring
     # because we are not calculating change for it
     # but we need it to calculate the first change
-    firstRow = next(csvreader)
+    firstRow = next(inReader)
     # count first month and profit/losses
     totalMonths = 1
     totalPL = int(firstRow[1])  # cast str to int
@@ -43,7 +45,7 @@ with open(csvpath) as csvfile:
     previousPL = int(firstRow[1])  # cast str to int
 
     # iterate through rest of rows
-    for row in csvreader:
+    for row in inReader:
         # get data from this row
         thisDate = row[0]
         thisPL = int(row[1])  # cast str to int
@@ -58,14 +60,14 @@ with open(csvpath) as csvfile:
         # increase totalChange by thisChange
         totalChange += thisChange
 
-        # check if thisChange is lower than minChange
-        if thisChange < minChange[1]:
+        # check if thisChange is lower than the greatest decrease
+        if thisChange < greatest["decrease"][1]:
             # if so, update minChange with data from this row
-            minChange = [thisDate, thisChange]
+            greatest["decrease"] = [thisDate, thisChange]
         # check if thisChange is higher than minChange
-        if thisChange > maxChange[1]:
+        if thisChange > greatest["increase"][1]:
             # if so, update maxChange with data from this row
-            maxChange = [thisDate, thisChange]
+            greatest["increase"] = [thisDate, thisChange]
         # set previousPL as thisPL before looping back to next row
         previousPL = thisPL
 # ------- close file stream --------
@@ -77,11 +79,19 @@ with open(csvpath) as csvfile:
 averageChange = round(totalChange / (totalMonths - 1), 2)
 
 # --- format the output in a string
-outString = f"Financial Analysis\n\n----------------------------\n\nTotal Months: {totalMonths}\n\nTotal: ${totalPL}\n\nAverange Change: ${averageChange}\n\nGreatest Increase in Profits: {maxChange[0]} (${maxChange[1]})\n\nGreatest Decrease in Profits: {minChange[0]} (${minChange[1]})"
+outString = f"\
+Financial Analysis\n\n\
+----------------------------\n\n\
+Total Months: {totalMonths}\n\n\
+Total: ${totalPL}\n\n\
+Averange Change: ${averageChange}\n\n\
+Greatest Increase in Profits: {greatest['increase'][0]} (${greatest['increase'][1]})\n\
+Greatest Decrease in Profits: {greatest['decrease'][0]} (${greatest['decrease'][1]})\
+"
 
 # --- write output to file
 # output source path
-outPath = os.path.join('analysis', 'budget_analysis_tsbarr.txt')
+outPath = os.path.join('analysis', 'budget_analysis_results.txt')
 
 # ------- open file stream --------
 # open output txt file using path

@@ -12,23 +12,23 @@ from collections import Counter
 
 # --- read input
 # input source path
-ipath = os.path.join('resources', 'election_data.csv')
+inPath = os.path.join('resources', 'election_data.csv')
 
 # ------- open file stream --------
 # open input csv file using path
-with open(ipath) as ifile:
+with open(inPath) as inFile:
     # csv reader, columns: id, county, candidate
-    ireader = csv.reader(ifile, delimiter=',')
+    inReader = csv.reader(inFile, delimiter=',')
 
     # store header row
-    header = next(ireader)
+    header = next(inReader)
 
     # using the rest of the rows in ireader,
     # extract the column of candidate names into a tuple
     # and use Counter() to count the instances of each name
     # voteCounts is now a dict with keys = candidate names, values = vote count
     # Based on "Counting Files by Type" example at: https://realpython.com/python-counter/
-    voteCounts = Counter((row[2] for row in ireader))
+    voteCounts = Counter((row[2] for row in inReader))
 # ------- close file stream --------
 
 # --- winner
@@ -47,22 +47,23 @@ totalVotes = voteCounts.total()
 
 # --- percentOfVote and output for individual candidates
 # now that we have the totalVotes, we can calculate percentOfVote
-# and format the candidate-level output, concatenating them in oCandidateInfo
-oCandidateInfo = ""
+# and format the candidate-level output, concatenating them in candidateSummary
+candidateSummary = ""
 for name in voteCounts:
-    # percentOfVote = voteCount / totalVotes, not necessary to store long-term
-    # multiply by 100 and round to 3 decimal places
-    percentOfVotes = round(voteCounts[name] / totalVotes * 100, 3)
+    # percentOfVote = voteCount / totalVotes, 
+    # not necessary to store after the loop
+    percentOfVotes = voteCounts[name] / totalVotes
     # format and add this candidate's info to output string
-    oCandidateInfo += f"{name}: {percentOfVotes}% ({voteCounts[name]})\n\n"
+    # percentOfVotes is formatted as percent with 3 decimals using f-string formatting
+    candidateSummary += f"{name}: {percentOfVotes:.3%} ({voteCounts[name]})\n\n"
 
 # --- format the whole output, store it in outString
-oString = f"\
+outString = f"\
 Election Results\n\n\
 -------------------------\n\n\
 Total Votes: {totalVotes}\n\n\
 -------------------------\n\n\
-{oCandidateInfo}\
+{candidateSummary}\
 -------------------------\n\n\
 Winner: {winner}\n\n\
 -------------------------\
@@ -70,18 +71,18 @@ Winner: {winner}\n\n\
 
 # --- write output to file
 # output source path
-opath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
+outPath = os.path.join('analysis', 'election_analysis_tsbarr.txt')
 
 # ------- open file stream --------
 # open output txt file using path
-with open(opath, mode="w") as ofile:
+with open(outPath, mode="w") as outFile:
     # write output string to file
-    ofile.write(oString)
+    outFile.write(outString)
 # ------- close file stream --------
 
 # --- print output to console
 print("\n\n")
-print(oString)
+print(outString)
 print("\n\n")
 
 # THE END
