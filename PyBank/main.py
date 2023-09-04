@@ -75,29 +75,29 @@ with open(inPath) as inFile:
 # --- average change
 # totalChange divided by totalMonths-1
 # (because no change for first month)
-# round to 2 decimal places
-averageChange = round(totalChange / (totalMonths - 1), 2)
+averageChange = totalChange / (totalMonths - 1)
 
 # --- format the output in a string
+# note: average change is formatted to 2 decimal spaces
 outString = f"\
 Financial Analysis\n\n\
 ----------------------------\n\n\
 Total Months: {totalMonths}\n\n\
 Total: ${totalPL}\n\n\
-Averange Change: ${averageChange}\n\n\
+Averange Change: ${averageChange:.2f}\n\n\
 Greatest Increase in Profits: {greatest['increase'][0]} (${greatest['increase'][1]})\n\
 Greatest Decrease in Profits: {greatest['decrease'][0]} (${greatest['decrease'][1]})\
 "
 
 # --- write output to file
-# output source path
-outPath = os.path.join('analysis', 'budget_analysis_results.txt')
+# # output source path
+# outPath = os.path.join('analysis', 'budget_analysis_results.txt')
 
-# ------- open file stream --------
-# open output txt file using path
-with open(outPath, mode="w") as outFile:
-    outFile.write(outString)
-# ------- close file stream --------
+# # ------- open file stream --------
+# # open output txt file using path
+# with open(outPath, mode="w") as outFile:
+#     outFile.write(outString)
+# # ------- close file stream --------
 
 # --- print output to console
 print("\n\n")
