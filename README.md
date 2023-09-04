@@ -4,6 +4,22 @@
 
 ---
 
+- [PyBank](#pybank)
+  - [Instructions](#instructions)
+  - [Running the program](#running-the-program)
+  - [Imports](#imports)
+  - [Output calculation](#output-calculation)
+  - [References](#references)
+- [PyPoll](#pypoll)
+  - [Instructions](#instructions-1)
+  - [Running the program](#running-the-program-1)
+  - [Imports](#imports-1)
+  - [Output calculation](#output-calculation-1)
+  - [References](#references-1)
+
+
+---
+
 This repo contains my work for the third weekly challenge of the UofT SCS edX Data Bootcamp.
 
 This challenge contains two parts: PyBank and PyPoll. Each part is contained within its own folder and should be run within that folder (i.e. PyBank or PyPoll), as each program is independent from each other. The scripts named `main.py` will read in the input data assuming that they are being run within the PyBank or PyPoll subfolder and use this assumption to assign the file paths.
